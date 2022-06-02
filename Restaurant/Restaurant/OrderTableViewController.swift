@@ -8,7 +8,7 @@
 import UIKit
 
 class OrderTableViewController: UITableViewController {
-    
+   //MARK: - Properties
     var order = Order() {
         didSet {
             NotificationCenter.default.post(name: MenuController.orderUpdatedNotification, object: nil)
@@ -24,24 +24,8 @@ class OrderTableViewController: UITableViewController {
                                               name: MenuController.orderUpdatedNotification, object: nil)        
     }
     
-    func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
-        
-        let menuItem = MenuController.shared.order.menuItems[indexPath.row]
-        
-        var content = cell.defaultContentConfiguration()
-            content.text = menuItem.name
-            content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-            content.image = UIImage(systemName: "photo.on.rectangle")
-            cell.contentConfiguration = content
-
-//        let menuItem = MenuController.shared.order.menuItems[indexPath.row]
-//        var content = cell.defaultContentConfiguration()
-//        content.text = menuItem.name
-//        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-//        content.image = UIImage(systemName: "photo.on.rectangle")
-//        cell.contentConfiguration = content
-    }
-
+    
+    //MARK: - IBAction
     @IBAction func submitTapped(_ sender: Any) {
         let orderTotal = MenuController.shared.order.menuItems.reduce(0.0) { (result, menuItem) -> Double in
                 return result + menuItem.price
@@ -59,6 +43,18 @@ class OrderTableViewController: UITableViewController {
         
             present(alertController, animated: true, completion: nil)
     }
+//MARK: - Custom methods
+    func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
+            
+            let menuItem = MenuController.shared.order.menuItems[indexPath.row]
+            
+            var content = cell.defaultContentConfiguration()
+                content.text = menuItem.name
+                content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+                content.image = UIImage(systemName: "photo.on.rectangle")
+                cell.contentConfiguration = content
+
+        }
 
     func uploadOrder() {
         let menuIds = MenuController.shared.order.menuItems.map { $0.id }
@@ -79,7 +75,7 @@ class OrderTableViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
+    //MARK: - IBAction
     @IBAction func unwindToOrderList(segue: UIStoryboardSegue) {
         if segue.identifier == "dismissConfirmation" {
                 MenuController.shared.order.menuItems.removeAll()
@@ -95,8 +91,6 @@ class OrderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return MenuController.shared.order.menuItems.count
     }
-
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Order", for: indexPath)
@@ -107,8 +101,6 @@ class OrderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

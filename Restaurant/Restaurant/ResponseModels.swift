@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+//MARK: - Structure
 struct MenuResponse: Codable {
     let items: [MenuItem]
 }

@@ -49,7 +49,6 @@ class MenuTableViewController: UITableViewController {
     
     
     //MARK: - Custom methods
-        
         func canThrowErrors(){
             Task.init {
                 do {
@@ -74,93 +73,25 @@ class MenuTableViewController: UITableViewController {
                                           style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        
+            
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? MenuItemCell else { return }
-    
-        let menuItem = menuItems[indexPath.row]
-    
-        cell.itemName = menuItem.name
-        cell.price = menuItem.price
-        cell.image = nil
-    
+            guard let cell = cell as? MenuItemCell else { return }
+            let menuItem = menuItems[indexPath.row]
+
+            cell.itemName = menuItem.name
+            cell.price = menuItem.price
+            cell.image = nil
+        
         imageLoadTasks[indexPath] = Task.init {
             if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
-                if let currentIndexPath = self.tableView.indexPath(for: cell),
-                    currentIndexPath == indexPath {
-                    cell.image = image
+                if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath == indexPath {
+                    var content = cell.defaultContentConfiguration()
+                    content.image = image
                 }
             }
             imageLoadTasks[indexPath] = nil
         }
     }
-    
-//    func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
-//            //guard let cell = cell as? MenuItemCell else { return }
-//            let menuItem = menuItems[indexPath.row]
-//
-//
-//            var content = cell.defaultContentConfiguration()
-//                content.text = menuItem.name
-//                content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-//                content.image = UIImage(systemName: "photo.on.rectangle")
-//                cell.contentConfiguration = content
-//
-//    Task.init {
-//        if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
-//            if let currentIndexPath = self.tableView.indexPath(for: cell),currentIndexPath == indexPath {
-//               var content = cell.defaultContentConfiguration()
-//                   content.text = menuItem.name
-//                   content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-//                   content.image = image
-//                   cell.contentConfiguration = content
-//                    }
-//                }
-//    }
-//            imageLoadTasks[indexPath] = Task.init {
-//                if let image = try? await MenuController.shared.fetchImage(from:
-//                   menuItem.imageURL) {
-//                    if let currentIndexPath = self.tableView.indexPath(for: cell),
-//                          currentIndexPath == indexPath {
-//                        var content = cell.defaultContentConfiguration()
-//                        content.text = menuItem.name
-//                        content.secondaryText =
-//                           menuItem.price.formatted(.currency(code: "usd"))
-//                        content.image = image
-//                        cell.contentConfiguration = content
-//                    }
-//                }
-//                imageLoadTasks[indexPath] = nil
-//            }
-//
-//            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
-//                if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath == indexPath {
-//                    var content = cell.defaultContentConfiguration()
-//                    content.text = menuItem.name
-//                    content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-//                    content.image = image
-//                    cell.contentConfiguration = content
-//                }
-//            }
-//            imageLoadTasks[indexPath] = nil
-//
-//
-////            cell.itemName = menuItem.name
-////            cell.price = menuItem.price
-////            cell.image = nil
-//
-////            imageLoadTasks[indexPath] = Task.init {
-////                if let image = try? await
-////                   MenuController.shared.fetchImage(from: menuItem.imageURL) {
-////                    if let currentIndexPath = self.tableView.indexPath(for:
-////                       cell),
-////                          currentIndexPath == indexPath {
-////                        cell.image = image
-////                    }
-////                }
-////                imageLoadTasks[indexPath] = nil
-////            }
-//        }
         
         // MARK: - Table view data source
         override func numberOfSections(in tableView: UITableView) -> Int {

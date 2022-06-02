@@ -8,16 +8,18 @@
 import UIKit
 
 class OrderConfirmationViewController: UIViewController {
-
+//MARK: - Outlet
     @IBOutlet var confirmationLabel: UILabel!
     
-    var minutesToPrepareOrder = 0
+    
 
     @IBSegueAction func confirmOrder(_ coder: NSCoder) -> OrderConfirmationViewController? {
         return OrderConfirmationViewController(coder: coder,
                minutesToPrepare: minutesToPrepareOrder)
     }
+    //MARK: - Properties
     let minutesToPrepare: Int
+    var minutesToPrepareOrder = 0
     
         init?(coder: NSCoder, minutesToPrepare: Int) {
             self.minutesToPrepare = minutesToPrepare
@@ -27,7 +29,7 @@ class OrderConfirmationViewController: UIViewController {
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-    
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         

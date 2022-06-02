@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+//MARK: - Structure
 struct Order: Codable {
     var menuItems: [MenuItem]
 
